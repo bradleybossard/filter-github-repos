@@ -11,6 +11,7 @@
   "author": "Bradley Bossard <bradleybossard@gmail.com> (http://bradleybossard.com/)",
   "license": "MIT",
   "dependencies": {
+    "fs-extra": "7.0.0",
     "lodash": "4.17.11",
     "request": "2.88.0",
     "request-promise-native": "1.0.5"

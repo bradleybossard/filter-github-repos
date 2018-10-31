@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const request = require('request-promise-native');
 const _ = require('lodash');
 
@@ -15,13 +15,16 @@ function fetchData() {
   };
 
   return request.get(options)
-  .then(res => {
-    console.log(`File written with ${res.length} entries`);
-    fs.writeFile(reposFilename, res);
-    return Promise.resolve();
-  });
+    .then(res => fs.outputJson(reposFilename, res));
 }
 
-if (!fs.existsSync(reposFilename)) {
-  fetchData();
-}
+fs.pathExists(reposFilename)
+  .then(result => {
+    if (!result) {
+      console.log('Fetching file');
+      return fetchData();
+    } else {
+      console.log('File exists!');
+    }
+  });
+
