@@ -1,6 +1,8 @@
 const fs = require('fs-extra');
 const request = require('request-promise-native');
 const _ = require('lodash');
+const { Client } = require('pg')
+const client = new Client()
 
 const username = 'bradleybossard';
 const url = `https://api.github.com/users/${username}/repos`;
@@ -19,6 +21,14 @@ async function fetchData() {
   return fsRet;
 }
 
+async function writeData() {
+  await client.connect()
+
+  const res = await client.query('SELECT $1::text as message', ['Hello world!'])
+  console.log(res.rows[0].message) // Hello world!
+  await client.end()
+}
+
 (async () =>  {
   console.log('start');
   let result = await fs.pathExists(reposFilename);
@@ -28,6 +38,6 @@ async function fetchData() {
   } else {
     console.log('File exists!');
   }
+  result = await writeData();
   console.log('done');
 })();
-
