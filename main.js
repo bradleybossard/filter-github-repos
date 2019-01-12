@@ -4,6 +4,8 @@ const _ = require('lodash');
 const { Client } = require('pg')
 const client = new Client()
 
+const sqlStrings = require('./sql-strings')
+
 const username = 'bradleybossard';
 const url = `https://api.github.com/users/${username}/repos`;
 const reposFilename = './repos.json';
@@ -24,8 +26,10 @@ async function fetchData() {
 async function writeData() {
   await client.connect()
 
-  const res = await client.query('SELECT $1::text as message', ['Hello world!'])
-  console.log(res.rows[0].message) // Hello world!
+  //const res = await client.query('SELECT $1::text as message', ['Hello world!'])
+  console.log(sqlStrings);
+  const res = await client.query(sqlStrings.createTable);
+  console.log(res) // Hello world!
   await client.end()
 }
 
